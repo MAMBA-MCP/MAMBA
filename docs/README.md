@@ -1,6 +1,6 @@
 # Documentation Guide
 
-All capabilities described here are planned, not implemented. The [proposal](<../Mamba(revised).pdf>) is the baseline; directory layouts and documentation templates are repository recommendations. TBD means a decision or validated procedure is still required.
+Only the single-file stdio MCP server and its `ping` tool are implemented. Vehicle, safety, simulation, and hardware capabilities described here remain planned. The [proposal](<../Mamba(revised).pdf>) is the baseline; directory layouts and documentation templates are repository recommendations. TBD means a decision or validated procedure is still required.
 
 | Document | Purpose |
 | --- | --- |

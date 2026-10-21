@@ -6,7 +6,7 @@ MAMBA is a proposed Python MCP server that connects model-agnostic AI agents to 
 
 ## Current status
 
-This repository contains a **documentation scaffold only**. Application code, executable tests, dependencies, runtime configuration, simulator integrations, and hardware support have not been implemented. Empty directories reserve locations for future work; their names are organizational recommendations rather than functioning modules.
+This repository contains a **minimal MCP server and planning documentation**. `src/mamba/server.py` exposes a `ping` tool over stdio. Vehicle connectivity, safety enforcement, simulator integrations, and hardware support are not implemented. Other empty directories reserve locations for future work.
 
 The [proposal](<Mamba(revised).pdf>) is the requirements baseline. Its dates are original planning targets, not current commitments or evidence of completion. MAVLink-M support is planned initially through stubs and simulation; actual dialect and SDK compatibility remain to be established.
 
@@ -15,13 +15,13 @@ The [proposal](<Mamba(revised).pdf>) is the requirements baseline. Its dates are
 1. Read [Repository Guidelines](AGENTS.md) and [architecture](docs/architecture.md).
 2. Review the [requirements and roadmap](docs/requirements.md), [safety requirements](docs/safety.md), and [open decisions](docs/decisions.md).
 3. Use the [acceptance matrix](docs/testing/acceptance-matrix.md) to plan feature validation.
-4. Fill in the [development setup](docs/development.md) and applicable [runbooks](docs/README.md) when implementing a feature. No server or test command is available yet.
+4. Fill in the [development setup](docs/development.md) and applicable [runbooks](docs/README.md) when implementing a feature. Server startup is documented below; no test runner is configured.
 
 ## Repository map
 
 | Location | Intended contents |
 | --- | --- |
-| [src/mamba/](src/mamba/README.md) | Future MCP tools, safety logic, protocol adapters, telemetry, audit, and operator integration |
+| [src/mamba/server.py](src/mamba/server.py) | Single-file MCP server with a `ping` tool |
 | [config/](config/README.md) | Future validated vehicle and payload safety definitions |
 | [tests/](tests/README.md) | Future unit, integration, simulation, and hardware tests |
 | [simulation/](simulation/README.md) | Future repeatable environments and scenarios |
@@ -30,7 +30,16 @@ The [proposal](<Mamba(revised).pdf>) is the requirements baseline. Its dates are
 
 ## Development
 
-Python is specified by the proposal; its version, package manager, MCP transport, and testing/linting tools are undecided. See [development setup](docs/development.md) for the information that must be recorded before reproducible installation is possible. `git diff --check` checks whitespace in tracked changes; it does not validate project functionality.
+Use Python 3.11+ and [uv](https://docs.astral.sh/uv/getting-started/installation/) to manage dependencies and the project environment. From the repository root:
+
+```bash
+uv sync --locked
+uv run --locked python src/mamba/server.py
+```
+
+The stdio server waits for an MCP client on stdin; it is not an HTTP server. Configure a client to launch `uv run --locked --project /absolute/path/to/MAMBA python /absolute/path/to/MAMBA/src/mamba/server.py`. Discover and call `ping` with no arguments to receive `pong`.
+
+`pyproject.toml` declares MCP and MAVSDK dependencies; `uv.lock` pins their resolved versions. Commit both files together after dependency changes. MAVSDK is available for future integration; the server still exposes only `ping`. Testing/linting tools remain undecided. See [development setup](docs/development.md) for the information that must be recorded before reproducible installation is possible. `git diff --check` checks whitespace in tracked changes; it does not validate project functionality.
 
 Complete applicable simulation validation before incremental hardware testing. See the [hardware runbook template](docs/runbooks/hardware.md).
 

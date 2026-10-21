@@ -1,10 +1,10 @@
 # Open Decision Register
 
-All entries are **open**. Named reviewers below are suggested roles, not assignments. Do not infer selections from directory names or recommendations. Record the outcome, rationale, reviewer, date, evidence, and affected requirements when resolving an entry.
+D01 and D02 are **partially resolved**: the basic server uses Python 3.11+, official MCP SDK v2, and stdio. uv is selected for environment/dependency management, with a non-package `pyproject.toml` and committed `uv.lock`. Exact dependency resolutions are locked; a Python minor-version pin and broader lifecycle validation remain open. All other entries are **open**. Named reviewers below are suggested roles, not assignments. Do not infer selections from directory names or recommendations. Record the outcome, rationale, reviewer, date, evidence, and affected requirements when resolving an entry.
 
 | ID | Decision needed | Evidence / resolution needed | Suggested reviewer |
 | --- | --- | --- | --- |
-| D01 | Python version and packaging/environment tools | Reproducible environment compatible with selected SDKs | Maintainers |
+| D01 | Python version and packaging/environment tools (partial: uv, Python 3.11+, non-package project) | Validate supported Python versions; dependencies resolved in `uv.lock` | Maintainers |
 | D02 | MCP SDK, transport, client/session lifecycle | Tool discovery, errors, reconnection, and client compatibility trial | Maintainers |
 | D03 | Dependency versions and MAVSDK/ArduPilot/Gazebo compatibility | Validated simulation version matrix and installation procedure | Simulation lead |
 | D04 | Test, formatting, lint/type tooling and coverage policy | Agreed commands and meaningful validation criteria | Maintainers |

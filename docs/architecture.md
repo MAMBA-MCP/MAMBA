@@ -1,6 +1,6 @@
 # Planned Architecture
 
-Source: proposal §2 and §4. No components or interfaces are implemented. This document describes responsibilities, not public APIs or wire schemas.
+Source: proposal §2 and §4. The current implementation is only `src/mamba/server.py`: a stdio MCP server exposing `ping`. The layered vehicle architecture below remains planned. This document describes responsibilities, not public APIs or wire schemas.
 
 ## Command and information flow
 

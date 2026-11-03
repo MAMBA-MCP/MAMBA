@@ -1,6 +1,6 @@
 # Vehicle connection — MAMBA-2 / F2
 
-MAMBA discovers one configured autopilot using the native MAVSDK v4 asyncio binding. `src/mamba/connection.py` owns configuration, status, discovery, SDK logging, and cleanup; `server.py` exposes the tools and starts FastMCP. A single SDK instance and transport persist across MCP calls and ordinary disconnects. The server exposes availability, not vehicle health, telemetry, or permission to execute actions. Safety enforcement, navigation, and multi-vehicle routing remain planned.
+MAMBA discovers one configured autopilot using the native MAVSDK v4 asyncio binding. `src/mamba/connection.py` owns configuration, status, discovery, SDK logging, and cleanup; `server.py` exposes the tools and starts FastMCP. A single SDK instance and transport persist across MCP calls and ordinary disconnects. The connection status tool exposes availability. Separate [vehicle data tools](vehicle-data.md) retrieve identification/version, position, NED velocity, battery, GPS, and health. These observations do not authorize actions. Safety enforcement, navigation, and multi-vehicle routing remain planned.
 
 ## Configuration and launch
 

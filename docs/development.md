@@ -1,6 +1,6 @@
 # Development Setup
 
-Status: the MCP server entrypoint is `src/mamba/server.py`, with connection configuration, discovery, status types, and SDK lifecycle in `src/mamba/connection.py`, using FastMCP 2 and stdio transport. It exposes `ping`, returning `pong`, and read-only `get_vehicle_status`. uv manages dependencies in `pyproject.toml`, resolved versions in `uv.lock`, and the local `.venv`. Optional `--config` startup TOML enables persistent native `mavsdk.asyncio` discovery for one configured system ID (MAMBA-2 / F2). pytest covers configuration, lifecycle, and stdio integration. No vehicle commands, safety enforcement, package build, formatter, or linter exists. ArduPilot SITL acceptance remains pending. Remaining TBD commands are planning placeholders.
+Status: the MCP server entrypoint is `src/mamba/server.py`, with connection configuration, discovery, status types, and SDK lifecycle in `src/mamba/connection.py`, using FastMCP 2 and stdio transport. It exposes `ping`, returning `pong`, read-only `get_vehicle_status`, and six information/telemetry tools backed by `src/mamba/vehicle_data.py` (MAMBA-26 / MAMBA-27). uv manages dependencies in `pyproject.toml`, resolved versions in `uv.lock`, and the local `.venv`. Optional `--config` startup TOML enables persistent native `mavsdk.asyncio` discovery for one configured system ID (MAMBA-2 / F2). pytest covers configuration, lifecycle, and stdio integration. No vehicle commands, safety enforcement, package build, formatter, or linter exists. ArduPilot SITL acceptance remains pending. Remaining TBD commands are planning placeholders.
 
 ## Environment record to complete
 
@@ -62,3 +62,9 @@ This is a non-package uv project (`package = false`): run the existing server fi
 5. Update documentation to describe actual behavior and reproducible commands as implementation becomes available.
 
 Keep credentials and machine-local connection settings out of version control. The existing `.gitignore` excludes `.env` and virtual environments; it does not provide blanket protection for every local credential directory. Review staged files before committing. Do not include operator credentials or sensitive approval material in examples or logs.
+
+## MAMBA-26/27 validation — 2026-11-03
+
+On local branch `feature/mamba-26-27-vehicle-data`, `uv run --locked pytest -q` passed **58 tests in 18.65s** on Linux/Python 3.14.4 with FastMCP 2.14.7 and native MAVSDK 4.0.6. Execution outside the restricted agent sandbox was approved because uv's cache is read-only there and MCP/native tests need thread notifications and loopback networking. Two upstream Authlib deprecation warnings remain. `git diff --check` passed.
+
+Coverage adds six read-only tools, typed MCP results, partial identification/version, numeric/enum serialization, false health flags, no application telemetry cache, timeout/cancellation cleanup, concurrent reads, target/session checks, and native information sharing/draining. Package imports are exercised by in-process MCP tests and direct script startup by stdio tests. See the [vehicle data runbook](runbooks/vehicle-data.md). No `sim_vehicle.py`/`arducopter` executable or running Docker container was available; telemetry-only ArduPilot SITL acceptance and hardware validation remain pending. No dependency manifest or lockfile changes were needed.

@@ -1,6 +1,6 @@
 # Testing and Evidence Plan
 
-pytest is a development dependency; run `uv run --locked pytest -q` for F1 stdio and F2 (MAMBA-2) connection/configuration tests. See the [connection evidence and limitations](../runbooks/connection.md). Benchmark runners and coverage thresholds remain TBD; SITL and hardware acceptance have not been run.
+pytest is a development dependency; run `uv run --locked pytest -q` for F1 stdio, F2 (MAMBA-2) connection/configuration tests, and MAMBA-26/27 read-only information/telemetry tests (F2 / partial F3). See the [connection evidence and limitations](../runbooks/connection.md). Benchmark runners and coverage thresholds remain TBD; SITL and hardware acceptance have not been run.
 
 ## Validation levels
 

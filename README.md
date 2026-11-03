@@ -12,10 +12,11 @@ The server uses **FastMCP 2**, stdio transport, and the native **MAVSDK v4 async
 - Optional startup discovery for one configured vehicle, selected by its expected MAVLink system ID.
 - A persistent MAVSDK connection with background disconnect detection and recovery.
 - Read-only connection status through `get_vehicle_status`.
+- Vehicle identification/version and on-demand position, NED velocity, battery, GPS, and health retrieval (MAMBA-26 / MAMBA-27).
 
 This provides the connection and availability implementation for **MAMBA-2 / F2 — MAVSDK Drone Connection**. Automated tests cover configuration, identity selection, failures, recovery, and MCP integration. Successful ArduPilot discovery and disconnect acceptance remain pending SITL validation.
 
-Vehicle telemetry/navigation tools, deterministic safety enforcement, authorization, multi-vehicle routing, simulator integration, and hardware validation remain planned. The [proposal](<Mamba(revised).pdf>) is the requirements baseline; its original dates are planning targets, not completion claims.
+Navigation tools, deterministic safety enforcement, authorization, multi-vehicle routing, simulator integration, and hardware validation remain planned. Read-only telemetry covers part of F3 — Basic Tools; it does not establish freshness or permission to act. The [proposal](<Mamba(revised).pdf>) is the requirements baseline; its original dates are planning targets, not completion claims.
 
 ## Quick start
 
@@ -74,6 +75,14 @@ Adapt the configuration wrapper to your client. Omit `--config` and its path to 
 | --- | --- | --- |
 | `ping` | `{}` | `pong` |
 | `get_vehicle_status` | `{}` | Configured ID, connection state, reason, UTC observation/change timestamps, and discovered autopilot IDs |
+| `get_vehicle_information` | `{}` | Identification and software versions; available sections and explicit partial errors |
+| `get_vehicle_position` | `{}` | Latitude/longitude and absolute/relative altitude |
+| `get_vehicle_velocity` | `{}` | North/east/down velocity in m/s |
+| `get_vehicle_battery` | `{}` | One battery update, including ID, voltage/current, and remaining percentage |
+| `get_vehicle_gps` | `{}` | Satellite count and fix type |
+| `get_vehicle_health` | `{}` | SDK health/calibration and armability flags |
+
+The six retrieval tools return `system_id`, UTC `received_at`, and typed `data`, with a 10-second deadline. Telemetry subscriptions close after each call. `received_at` is SDK result receipt time, not validated sensor freshness. See the [vehicle data runbook](docs/runbooks/vehicle-data.md) for fields, units, partial information, errors, and native-work cleanup.
 
 Connection states are `unconfigured`, `connecting`, `connected`, `disconnected`, and `error`. Connection status does not establish vehicle health or authorization to execute actions.
 
@@ -96,6 +105,7 @@ Complete applicable simulation validation before incremental hardware testing; f
 | --- | --- |
 | [src/mamba/server.py](src/mamba/server.py) | FastMCP setup, tools, and CLI startup |
 | [src/mamba/connection.py](src/mamba/connection.py) | Connection configuration, discovery, availability, and SDK lifecycle |
+| [src/mamba/vehicle_data.py](src/mamba/vehicle_data.py) | Read-only information/telemetry retrieval, response models, and request cleanup |
 | [config/](config/README.md) | Connection example and reserved vehicle/payload safety definitions |
 | [tests/](tests/README.md) | Unit and stdio integration tests; reserved simulation/hardware tests |
 | [simulation/](simulation/README.md) | Reserved simulation scenarios and assets |

@@ -84,8 +84,11 @@ class VehicleConnection:
         )
         self.sdk: Mavsdk | None = None
         self.system: System | None = None
+        self.generation = 0
 
     def set_state(self, state: ConnectionState, reason: str) -> None:
+        if (state == "connected") != (self.status.state == "connected"):
+            self.generation += 1
         if (state, reason) != (self.status.state, self.status.reason):
             self.status.state = state
             self.status.reason = reason
@@ -164,6 +167,8 @@ class VehicleConnection:
                 await asyncio.sleep(RETRY_INTERVAL)
         finally:
             self.system = None
+            if self.status.state == "connected":
+                self.set_state("disconnected", "Connection monitoring stopped")
             if setup_task is not None:
                 # Do not destroy native handles while setup is still using them.
                 with suppress(Exception):

@@ -97,3 +97,16 @@ Final verification after adding the simulation group: `uv run --locked pytest -q
 passed **76 tests in 18.61s** (the same two Authlib warnings). `uv lock --check`,
 `git diff --check`, and syntax compilation of the opt-in harness passed.
 The final SITL harness passed; no simulator or MAMBA server process remained.
+
+## MAVLink-M investigation and position-report validation — 2026-11-03
+
+MAMBA-28: pinned native XML load confirmed with MAVSDK 4.0.6.
+MAMBA-29: `uv run --locked --group simulation python tests/simulation/validate_mavlink_m.py --ardupilot "$HOME/ardupilot" --output /tmp/mamba-mavlink-m-final`
+passed its isolated two-way wire scenario. The [acceptance record](testing/mamba-28-29-sitl.md)
+retains the version, identity, CRC, byte and field evidence.
+MAMBA-30: the [support matrix](mavlink-m-mappings.md) inventories every custom
+message and the unsupported semantic mappings. Production dependencies and the
+MCP catalog are unchanged; the existing simulation group provides the generator.
+
+`uv run --locked --group simulation pytest -q` passed **112 tests in 19.74s**,
+with the same two upstream Authlib warnings. No formatter/linter is configured.

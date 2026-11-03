@@ -34,3 +34,16 @@ Six separate no-argument tools expose information, position, NED velocity, batte
 ## Consolidated telemetry interface — 2026-11-03
 
 D11 now selects one `get_vehicle_telemetry(fields)` tool instead of five individual telemetry tools, without legacy aliases. `fields` is required, unique, nonempty, and restricted to position/velocity/battery/gps/health. Information/status/ping remain separate. Categories run concurrently under one 10-second acquisition deadline, with partial readings and explicit category errors; no successes produce a tool error. A detected target/session change rejects the whole batch. Category timestamps remain separate and do not establish sensor freshness. Internal retrieval and native-information lifecycle behavior are preserved. See the [migration runbook](runbooks/vehicle-data.md) and [measured descriptor/response sizes](../benchmarks/telemetry-interface.md). These byte measurements do not establish model token savings or agent reliability.
+
+## MAMBA-28/29/30 — runtime XML and own-position experiment, 2026-11-03
+
+D10 is **partially resolved**: select native MAVSDK 4.0.6 MavlinkDirect runtime
+XML loading for the pinned `PARTICIPANT_POSITION` experiment, with independent
+pymavlink wire validation and a strict typed helper. No SDK rebuild or custom
+native plugin is needed for that wire path. Full-dialect semantic support and
+production publisher lifecycle remain open. Native field validation is permissive
+and source headers come from SDK configuration; the adapter and test account for
+both. Pin Dronecode revision `23cec36751681aa281c1e5ca6b222a07c6c0c002` with
+checksum/licensing. See the [compatibility runbook](runbooks/mavlink-m.md),
+[mapping gaps](mavlink-m-mappings.md), and [acceptance evidence](testing/mamba-28-29-sitl.md).
+The existing MCP tool catalog and ground-station identity are unchanged.

@@ -1,0 +1,257 @@
+{
+  "started_at": "2026-11-03T19:35:13.030657+00:00",
+  "passed": true,
+  "versions": {
+    "mavsdk": "4.0.6",
+    "pymavlink": "2.4.49",
+    "pydantic": "2.14.1"
+  },
+  "binary_sha256": "ed86aa366e26025bcaba9f7a284b2982b06ed930f5509bcf6791f3ce128139c7",
+  "ardupilot_source_revision": "9165d22419406556fc9815d9f4e3e299e13713a8",
+  "mamba_base_revision": "8c67f1f041d3fc6ec947dc0f8077f9850ea15d15",
+  "message_id": 53003,
+  "crc_extra": 126,
+  "simulator_command": [
+    "/home/jank/ardupilot/build/sitl/bin/arducopter",
+    "--model",
+    "quad",
+    "--home",
+    "40,-74,125,0",
+    "--defaults",
+    "/home/jank/ardupilot/Tools/autotest/default_params/copter.parm",
+    "--sysid",
+    "1",
+    "--instance",
+    "32",
+    "--serial0",
+    "udpclient:127.0.0.1:59499"
+  ],
+  "telemetry_source": {
+    "system_id": 1,
+    "readings": {
+      "position": {
+        "received_at": "2026-11-03T19:35:33.225515+00:00",
+        "data": {
+          "latitude_deg": 40.0,
+          "longitude_deg": -74.0,
+          "absolute_altitude_m": 125.09000396728516,
+          "relative_altitude_m": 0.0
+        }
+      },
+      "velocity": {
+        "received_at": "2026-11-03T19:35:33.227379+00:00",
+        "data": {
+          "north_m_s": 0.0,
+          "east_m_s": 0.0,
+          "down_m_s": 0.0
+        }
+      },
+      "health": {
+        "received_at": "2026-11-03T19:35:34.145433+00:00",
+        "data": {
+          "is_gyrometer_calibration_ok": true,
+          "is_accelerometer_calibration_ok": true,
+          "is_magnetometer_calibration_ok": true,
+          "is_local_position_ok": true,
+          "is_global_position_ok": true,
+          "is_home_position_ok": true,
+          "is_armable": true
+        }
+      }
+    },
+    "errors": {}
+  },
+  "before_xml": "INVALID_MESSAGE",
+  "malformed_xml": "ERROR",
+  "full_xml_load": "success (includes not needed for custom fields)",
+  "scoped_xml_load": "success",
+  "own_position": {
+    "received_at": "2026-11-03T19:35:34.177517+00:00",
+    "system_id": 1,
+    "component_id": 191,
+    "wire_hex": "fd6d00002401bf0bcf0099aeba5d645f06000084d717007fe4d3152efa420000000000000000000000000000c07f00000000000000000000000000000000000000004d414d42412d5349544c00000000000000000000000000000000000000000000000000000000000000000000000000000000010001a323",
+    "crc": 9123,
+    "fields": {
+      "mavpackettype": "PARTICIPANT_POSITION",
+      "time_usec": 1793734534147737,
+      "lat": 400000000,
+      "lon": -740000000,
+      "alt": 125.09000396728516,
+      "vx": 0.0,
+      "vy": 0.0,
+      "vz": 0.0,
+      "course": null,
+      "external_track_number": "",
+      "callsign": "MAMBA-SITL",
+      "origin_sysid": 1,
+      "external_track_type": 0,
+      "stanag_identity": 1,
+      "ppli_type": 0
+    }
+  },
+  "own_position_expected": {
+    "time_usec": 1793734534147737,
+    "lat": 400000000,
+    "lon": -740000000,
+    "alt": 125.09000396728516,
+    "vx": 0.0,
+    "vy": 0.0,
+    "vz": 0.0,
+    "course": null,
+    "external_track_number": "",
+    "callsign": "MAMBA-SITL",
+    "origin_sysid": 1,
+    "external_track_type": 0,
+    "stanag_identity": 1,
+    "ppli_type": 0
+  },
+  "independent_sitl_source": {
+    "received_at": "2026-11-03T19:35:33.224934+00:00",
+    "monotonic": 2583.297099441,
+    "system_id": 1,
+    "component_id": 1,
+    "message": {
+      "mavpackettype": "GLOBAL_POSITION_INT",
+      "time_boot_ms": 20119,
+      "lat": 400000000,
+      "lon": -740000000,
+      "alt": 125090,
+      "relative_alt": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "hdg": 35627
+    }
+  },
+  "boundary_roundtrip": {
+    "received_at": "2026-11-03T19:35:34.189324+00:00",
+    "system_id": 1,
+    "component_id": 191,
+    "wire_hex": "fd6d00002501bf0bcf00ffffffffffffffff00175bca00d2496b000048c10000a03f000020c00000403f00c0b34354545454545454545454545454545454545454005353535353535353535353535353535353535353535353535353535353535353535353535353535353535353535353535300010301e7c6",
+    "crc": 50919,
+    "fields": {
+      "mavpackettype": "PARTICIPANT_POSITION",
+      "time_usec": 18446744073709551615,
+      "lat": -900000000,
+      "lon": 1800000000,
+      "alt": -12.5,
+      "vx": 1.25,
+      "vy": -2.5,
+      "vz": 0.75,
+      "course": 359.5,
+      "external_track_number": "TTTTTTTTTTTTTTTTTTT",
+      "callsign": "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
+      "origin_sysid": 1,
+      "external_track_type": 3,
+      "stanag_identity": 1,
+      "ppli_type": 0
+    }
+  },
+  "native_validation_probes": {
+    "unknown_field": {
+      "result": "accepted_by_sdk",
+      "wire": {
+        "received_at": "2026-11-03T19:35:34.200606+00:00",
+        "system_id": 1,
+        "component_id": 191,
+        "wire_hex": "fd6d00002601bf0bcf0099aeba5d645f06000084d717007fe4d3152efa420000000000000000000000000000c07f00000000000000000000000000000000000000004d414d42412d5349544c0000000000000000000000000000000000000000000000000000000000000000000000000000000001000159c9",
+        "crc": 51545,
+        "fields": {
+          "mavpackettype": "PARTICIPANT_POSITION",
+          "time_usec": 1793734534147737,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125.09000396728516,
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0,
+          "course": null,
+          "external_track_number": "",
+          "callsign": "MAMBA-SITL",
+          "origin_sysid": 1,
+          "external_track_type": 0,
+          "stanag_identity": 1,
+          "ppli_type": 0
+        }
+      }
+    },
+    "uint8_overflow": {
+      "result": "accepted_by_sdk",
+      "wire": {
+        "received_at": "2026-11-03T19:35:34.211689+00:00",
+        "system_id": 1,
+        "component_id": 191,
+        "wire_hex": "fd6d00002701bf0bcf0099aeba5d645f06000084d717007fe4d3152efa420000000000000000000000000000c07f00000000000000000000000000000000000000004d414d42412d5349544c000000000000000000000000000000000000000000000000000000000000000000000000000000000000019fa0",
+        "crc": 41119,
+        "fields": {
+          "mavpackettype": "PARTICIPANT_POSITION",
+          "time_usec": 1793734534147737,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125.09000396728516,
+          "vx": 0.0,
+          "vy": 0.0,
+          "vz": 0.0,
+          "course": null,
+          "external_track_number": "",
+          "callsign": "MAMBA-SITL",
+          "origin_sysid": 0,
+          "external_track_type": 0,
+          "stanag_identity": 1,
+          "ppli_type": 0
+        }
+      }
+    }
+  },
+  "source_override_probe": {
+    "received_at": "2026-11-03T19:35:34.222902+00:00",
+    "system_id": 1,
+    "component_id": 191,
+    "wire_hex": "fd6d00002801bf0bcf0099aeba5d645f06000084d717007fe4d3152efa420000000000000000000000000000c07f00000000000000000000000000000000000000004d414d42412d5349544c000000000000000000000000000000000000000000000000000000000000000000000000000000000100019d4d",
+    "crc": 19869,
+    "fields": {
+      "mavpackettype": "PARTICIPANT_POSITION",
+      "time_usec": 1793734534147737,
+      "lat": 400000000,
+      "lon": -740000000,
+      "alt": 125.09000396728516,
+      "vx": 0.0,
+      "vy": 0.0,
+      "vz": 0.0,
+      "course": null,
+      "external_track_number": "",
+      "callsign": "MAMBA-SITL",
+      "origin_sysid": 1,
+      "external_track_type": 0,
+      "stanag_identity": 1,
+      "ppli_type": 0
+    }
+  },
+  "bad_crc_rejected": true,
+  "reverse_roundtrip": {
+    "system_id": 1,
+    "component_id": 192,
+    "fields": {
+      "message_id": 53003,
+      "message_name": "PARTICIPANT_POSITION",
+      "alt": null,
+      "callsign": "MAMBA-SITL",
+      "course": 123.25,
+      "external_track_number": "",
+      "external_track_type": 0,
+      "lat": 400000001,
+      "lon": -740000000,
+      "origin_sysid": 1,
+      "ppli_type": 0,
+      "stanag_identity": 1,
+      "time_usec": 9223372036854775931,
+      "vx": -1.5,
+      "vy": null,
+      "vz": 0.0
+    }
+  },
+  "connection_persisted": true,
+  "simulator_exit_code": 0,
+  "wire_position_count": 5,
+  "finished_at": "2026-11-03T19:35:34.650656+00:00"
+}

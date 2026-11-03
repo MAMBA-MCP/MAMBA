@@ -41,3 +41,11 @@ errors, cancellation, disconnect invalidation, responsiveness and recovery
 for one stationary disarmed ArduCopter. See the [scope and limits](mamba-26-27-sitl.md).
 This closes that telemetry-only validation gap; it does not accept all of F2/F3,
 multi-system routing, navigation, safety enforcement, or hardware operation.
+
+MAMBA-28/29/30 record (2026-11-03): native custom XML loading and the
+`PARTICIPANT_POSITION` semantic helper have passed isolated SITL-derived,
+two-way loopback wire acceptance. The [scenario](../../tests/simulation/validate_mavlink_m.py),
+[retained evidence](evidence/mamba-28-29-wsl.json), and
+[mapping matrix](../mavlink-m-mappings.md) distinguish loader support from
+unimplemented mappings. This is partial F2/F12 evidence, not full F12/F14,
+payload, safety or hardware acceptance. No additional MCP tools are exposed.

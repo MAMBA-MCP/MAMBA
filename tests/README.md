@@ -11,3 +11,10 @@ connects a real stdio MCP client, compares telemetry with independent MAVLink
 observations, and exercises stream loss, cancellation and reconnect. It is
 deliberately outside default pytest collection. Install the locked `simulation`
 group and follow the [WSL acceptance runbook](../docs/testing/mamba-26-27-sitl.md).
+
+`simulation/validate_mavlink_m.py` is the separate MAMBA-28/29 opt-in scenario:
+runtime XML loading, strict position mapping, independent MAVLink wire decoding,
+reverse receive, negative CRC and encoder validation probes. It uses its own SITL
+instance 32 and sends reports only to a local decoder. See the
+[compatibility runbook](../docs/runbooks/mavlink-m.md). `unit/test_participant.py`
+runs by default without a simulator or pymavlink.

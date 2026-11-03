@@ -1,0 +1,10 @@
+{
+  "military.xml": {
+    "url": "https://raw.githubusercontent.com/Dronecode/mavlink-military/23cec36751681aa281c1e5ca6b222a07c6c0c002/military.xml",
+    "sha256": "02a88f79b9b4e58b271d9b0012a06087ac4ec975c75a8b1d7ba704c43bb55a8f"
+  },
+  "LICENSE": {
+    "url": "https://raw.githubusercontent.com/Dronecode/mavlink-military/23cec36751681aa281c1e5ca6b222a07c6c0c002/LICENSE",
+    "sha256": "efaffd74f322ebbe8e18eb735a418d49011fa0e54902f87a927a04bef4c27150"
+  }
+}

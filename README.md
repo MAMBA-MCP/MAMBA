@@ -2,7 +2,7 @@
 
 MCP-enabled Autonomous MAVLink-M Bridge for AI.
 
-MAMBA is a Python MCP server for connecting AI agents to MAVLink vehicles. Its planned architecture routes vehicle commands through a deterministic safety layer before MAVSDK/protocol adapters execute them. MAVLink-M payload support remains planned.
+MAMBA is a Python MCP server for connecting AI agents to MAVLink vehicles. Its planned architecture routes vehicle commands through a deterministic safety layer before MAVSDK/protocol adapters execute them. MAVLink-M payload support remains planned. A pinned own-position XML/wire experiment now validates `PARTICIPANT_POSITION` independently; see the [compatibility runbook](docs/runbooks/mavlink-m.md) and [mapping gaps](docs/mavlink-m-mappings.md).
 
 ## Current status
 

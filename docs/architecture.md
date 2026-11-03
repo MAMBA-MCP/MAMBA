@@ -44,7 +44,7 @@ Vehicle and payload state is derived from telemetry and system information, not 
 
 Keep platform-specific operating envelopes and state definitions configuration-driven, with requirements validated alongside the customer and subject matter experts. UAV, USV, and UGV models share infrastructure without imposing airborne states on surface/ground vehicles.
 
-MAVLink-M starts as an abstraction/stub and representative simulation integration. The dialect/version, discovery/addressing, and MAVSDK extension mechanism are unresolved. Do not claim actual SDK or hardware support from the proposal alone.
+MAVLink-M starts as an abstraction/stub and representative simulation integration. The pinned own-position experiment uses native MavlinkDirect runtime XML and a strict `participant.py` helper, with [independent wire evidence](testing/mamba-28-29-sitl.md). It is not exposed through MCP or a production publisher. Broader dialect compatibility, discovery/addressing and payload integration remain unresolved. Do not claim actual SDK or hardware support from the proposal alone.
 
 ## Tool documentation required during implementation
 

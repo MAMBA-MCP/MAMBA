@@ -1,6 +1,6 @@
 # Requirements and Roadmap
 
-Source: [proposal](<../Mamba(revised).pdf>) §2.2, §5, and §9. All rows are **planned / not implemented**. Dates reproduce the original release plan and are not completion claims or renewed commitments.
+Source: [proposal](<../Mamba(revised).pdf>) §2.2, §5, and §9. F1 has a basic stdio implementation; F2 (MAMBA-2, MAVSDK Drone Connection) has configured persistent discovery/status and automated failure tests, with ArduPilot SITL acceptance pending. Remaining capabilities are **planned / not implemented**; see the [connection runbook](runbooks/connection.md). Dates reproduce the original release plan and are not completion claims or renewed commitments.
 
 ## Core deliverables
 

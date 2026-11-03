@@ -1,6 +1,6 @@
 # Testing and Evidence Plan
 
-No tests or benchmark runners are implemented. Framework and coverage thresholds remain TBD; pytest and `test_*.py` are contributor recommendations, not installed tooling.
+pytest is a development dependency; run `uv run --locked pytest -q` for F1 stdio and F2 (MAMBA-2) connection/configuration tests. See the [connection evidence and limitations](../runbooks/connection.md). Benchmark runners and coverage thresholds remain TBD; SITL and hardware acceptance have not been run.
 
 ## Validation levels
 

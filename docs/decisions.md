@@ -1,6 +1,6 @@
 # Open Decision Register
 
-D01 and D02 are **partially resolved**: the basic server uses Python 3.11+, official MCP SDK v2, and stdio. uv is selected for environment/dependency management, with a non-package `pyproject.toml` and committed `uv.lock`. Exact dependency resolutions are locked; a Python minor-version pin and broader lifecycle validation remain open. All other entries are **open**. Named reviewers below are suggested roles, not assignments. Do not infer selections from directory names or recommendations. Record the outcome, rationale, reviewer, date, evidence, and affected requirements when resolving an entry.
+D01 and D02 are **partially resolved**: the basic server uses Python 3.11+, FastMCP 2, and stdio. uv is selected for environment/dependency management, with a non-package `pyproject.toml` and committed `uv.lock`. Exact dependency resolutions are locked; a Python minor-version pin and broader lifecycle validation remain open. D03, D04, and D12 have partial implementation notes below; other entries remain **open**. Named reviewers below are suggested roles, not assignments. Do not infer selections from directory names or recommendations. Record the outcome, rationale, reviewer, date, evidence, and affected requirements when resolving an entry.
 
 | ID | Decision needed | Evidence / resolution needed | Suggested reviewer |
 | --- | --- | --- | --- |
@@ -22,3 +22,7 @@ D01 and D02 are **partially resolved**: the basic server uses Python 3.11+, offi
 | D16 | Proposal numbering and schedule reconciliation | Confirm F7/F8 mapping, missing F19 detail, current ownership and milestones | Team and customer |
 
 No numeric operating limits, approval lifetime, protocol schema, or implementation mechanism is selected by this scaffold.
+
+## MAMBA-2 / F2 implementation decisions
+
+Native `mavsdk.asyncio` from `mavsdk>=4.0.6,<5` is selected (D03); ArduPilot compatibility still needs SITL evidence. pytest is selected as a dev dependency (D04), with no coverage threshold. Startup `--config` selects a strict TOML definition for one endpoint and required expected system ID (D12). Other discovered IDs never replace the target. Discovery timeout is 10 seconds, retry delay 5 seconds, and polling interval 1 second; these are connection defaults, not reviewed vehicle safety/freshness limits. D12 multi-vehicle isolation and identity assurance remain open. See the [connection runbook](runbooks/connection.md) for evidence and limitations.

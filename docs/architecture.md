@@ -1,6 +1,6 @@
 # Planned Architecture
 
-Source: proposal §2 and §4. The current implementation is only `src/mamba/server.py`: a stdio MCP server exposing `ping`. The layered vehicle architecture below remains planned. This document describes responsibilities, not public APIs or wire schemas.
+Source: proposal §2 and §4. The current implementation separates `src/mamba/server.py` (FastMCP setup, tools, and CLI startup) from `src/mamba/connection.py` (configuration, status types, discovery, and native SDK lifecycle). The stdio server exposes `ping` and `get_vehicle_status`; its lifespan delegates optional MAVSDK v4 asyncio connection management to the connection module. A background task selects the expected system ID and tracks disconnect/recovery. The safety and command layers below remain planned; see the [connection runbook](runbooks/connection.md). This document describes responsibilities, not public APIs or wire schemas.
 
 ## Command and information flow
 

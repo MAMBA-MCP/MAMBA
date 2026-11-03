@@ -1,6 +1,6 @@
 # Documentation Guide
 
-Only the single-file stdio MCP server and its `ping` tool are implemented. Vehicle, safety, simulation, and hardware capabilities described here remain planned. The [proposal](<../Mamba(revised).pdf>) is the baseline; directory layouts and documentation templates are repository recommendations. TBD means a decision or validated procedure is still required.
+The stdio MCP server (`src/mamba/server.py`) delegates connection configuration, discovery, and SDK lifecycle to `src/mamba/connection.py`. Together they implement `ping`, configured native MAVSDK v4 asyncio discovery, and read-only vehicle connection status (MAMBA-2 / F2). Automated tests cover failure handling; ArduPilot SITL acceptance remains pending. Vehicle commands, safety, simulation integration, and hardware capabilities described here remain planned. The [proposal](<../Mamba(revised).pdf>) is the baseline; directory layouts and documentation templates are repository recommendations. TBD means a decision or validated procedure is still required.
 
 | Document | Purpose |
 | --- | --- |
@@ -12,6 +12,7 @@ Only the single-file stdio MCP server and its `ping` tool are implemented. Vehic
 | [Testing strategy](testing/README.md) | Validation levels, evidence, and benchmark metrics |
 | [Acceptance matrix](testing/acceptance-matrix.md) | Feature-to-scenario traceability |
 | [Safety test matrix](testing/safety-matrix.md) | Safety-rule-to-scenario traceability |
+| [Vehicle connection](runbooks/connection.md) | Startup TOML, status tool, recovery, and pending SITL acceptance |
 | [Simulation runbook](runbooks/simulation.md) | Future startup, reset, failure, and shutdown procedure |
 | [Hardware runbook](runbooks/hardware.md) | Future incremental hardware validation procedure |
 | [Audit review](runbooks/audit.md) | Future audit recording and investigation procedure |

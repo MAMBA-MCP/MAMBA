@@ -1,0 +1,5 @@
+# Copy and edit for your local ArduPilot SITL instance. This file is opt-in.
+# Configure SITL to send MAVLink to 127.0.0.1:14540 and use SYSID_THISMAV=1.
+[vehicle]
+connection_url = "udpin://127.0.0.1:14540"
+system_id = 1

@@ -1,6 +1,6 @@
 # Feature Acceptance Matrix
 
-Source: proposal §9, except F19 (release table only). IDs follow the appendix; see [numbering reconciliation](../requirements.md). These are summarized acceptance scenarios, not executable tests or exhaustive replacements for the proposal. Every row is **not run / not implemented**. The level allocation and scenario IDs below are organizational recommendations. Evidence requirements are defined in the [testing plan](README.md).
+Source: proposal §9, except F19 (release table only). IDs follow the appendix; see [numbering reconciliation](../requirements.md). These are summarized acceptance scenarios, not executable tests or exhaustive replacements for the proposal. F1 has automated stdio coverage. F2 (MAMBA-2, MAVSDK Drone Connection) has discovery/status implemented with unit and stdio integration evidence; ArduPilot SITL acceptance remains pending. Other rows are **not run / not implemented**. The level allocation and scenario IDs below are organizational recommendations. Evidence requirements are defined in the [testing plan](README.md).
 
 | Feature | Scenario ID / planned levels | Acceptance focus |
 | --- | --- | --- |
@@ -27,4 +27,4 @@ Source: proposal §9, except F19 (release table only). IDs follow the appendix; 
 
 ## Completion record
 
-When executable scenarios exist, link each scenario ID to its test/scenario artifact and record run evidence, pass/fail, exceptions, and reviewer. Until then, all rows remain planning coverage only.
+When executable scenarios exist, link each scenario ID to its test/scenario artifact and record run evidence, pass/fail, exceptions, and reviewer. F1/F2 automated evidence: `uv run --locked pytest -q`, including `tests/unit/test_vehicle_connection.py` and `tests/integration/test_stdio.py`. Coverage includes identity selection, timeout, disconnect/recovery, SDK failure, persistent transport, cleanup, and stdio status/ping. Real native SDK evidence covers empty-endpoint startup/timeout only; vehicle discovery/disconnect acceptance requires the pending [SITL sequence](../runbooks/connection.md). Other rows remain planning coverage only.

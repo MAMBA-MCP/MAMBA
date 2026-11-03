@@ -12,6 +12,7 @@ standalone full-dialect mavgen input. The experiment uses the installed SDK's
 built-in common definitions, and `mamba.participant.participant_xml()` extracts
 the exact `PARTICIPANT_POSITION` message and its three enum definitions into a
 self-contained fragment for runtime loading and independent binding generation.
+The independent wire test verifies message ID 53003 and CRC extra 126.
 No other message has a semantic adapter or transmit path in MAMBA. Generated
 pymavlink code stays in the scenario output directory and is not committed.
 

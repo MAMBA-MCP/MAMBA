@@ -1,4 +1,4 @@
-"""MAMBA-26/27: typed reads and controlled errors through the MCP protocol."""
+"""MAMBA-26/27: consolidated telemetry schemas, partial results, and MCP errors."""
 
 import asyncio
 from contextlib import asynccontextmanager
@@ -20,41 +20,77 @@ def test_read_tools_through_mcp(data_sdk, monkeypatch):
     async def scenario():
         async with Client(server.create_server()) as client:
             tools = {tool.name: tool for tool in await client.list_tools()}
-            assert len(tools) == 8
-            expectations = {
-                'get_vehicle_information': ('identification', {'hardware_uid': 'hardware-1',
-                                                              'legacy_uid': 1234567890123456789}),
-                'get_vehicle_position': ('latitude_deg', 40.0),
-                'get_vehicle_velocity': ('down_m_s', 3.0),
-                'get_vehicle_battery': ('remaining_percent', 75.0),
-                'get_vehicle_gps': ('fix_type', 'NO_FIX'),
-                'get_vehicle_health': ('is_armable', False),
+            assert set(tools) == {
+                'ping', 'get_vehicle_status', 'get_vehicle_information', 'get_vehicle_telemetry',
             }
-            for name, (field, expected) in expectations.items():
-                assert tools[name].annotations.readOnlyHint
-                assert tools[name].inputSchema.get('properties', {}) == {}
-                schema = tools[name].outputSchema
-                assert {'system_id', 'received_at', 'data'} <= set(schema['properties'])
-                result = await client.call_tool(name, {})
-                value = json.loads(result.content[0].text)
-                assert value['system_id'] == 1
-                assert value['data'][field] == expected
-                assert 'received_at' in value
+            tool = tools['get_vehicle_telemetry']
+            assert tool.annotations.readOnlyHint
+            assert tool.inputSchema['required'] == ['fields']
+            field_schema = tool.inputSchema['properties']['fields']
+            assert set(field_schema['items']['enum']) == {'position', 'velocity', 'battery', 'gps', 'health'}
+            assert field_schema['minItems'] == 1 and field_schema['maxItems'] == 5
+            assert field_schema['uniqueItems'] is True
+            assert {'system_id', 'readings', 'errors'} <= set(tool.outputSchema['properties'])
 
-            # A false health flag is valid data. A silent stream is a tool error.
+            for arguments in [{}, {'fields': []}, {'fields': ['unknown']},
+                              {'fields': ['position', 'position']}]:
+                failure = await client.call_tool('get_vehicle_telemetry', arguments, raise_on_error=False)
+                assert failure.is_error
+            assert not data_sdk.telemetry_plugins
+            for old in ['position', 'velocity', 'battery', 'gps', 'health']:
+                failure = await client.call_tool(f'get_vehicle_{old}', {}, raise_on_error=False)
+                assert failure.is_error
+
+            info_tool = tools['get_vehicle_information']
+            assert info_tool.annotations.readOnlyHint
+            assert info_tool.inputSchema.get('properties', {}) == {}
+            info = await client.call_tool('get_vehicle_information', {})
+            info_value = json.loads(info.content[0].text)
+            assert info_value['system_id'] == 1
+            assert info_value['data']['identification']['hardware_uid'] == 'hardware-1'
+            assert 'received_at' in info_value
+
+            result = await client.call_tool('get_vehicle_telemetry', {
+                'fields': ['position', 'velocity', 'battery', 'gps', 'health'],
+            })
+            payload = json.loads(result.content[0].text)
+            assert payload['system_id'] == 1
+            assert payload['errors'] == {}
+            for field, (key, expected) in {
+                'position': ('latitude_deg', 40.0), 'velocity': ('down_m_s', 3.0),
+                'battery': ('remaining_percent', 75.0), 'gps': ('fix_type', 'NO_FIX'),
+                'health': ('is_armable', False),
+            }.items():
+                assert payload['readings'][field]['data'][key] == expected
+                assert set(payload['readings'][field]) == {'received_at', 'data'}
+            assert payload['readings']['battery']['data']['temperature_degc'] is None
+
+            # Only requested successful categories are emitted; nested unknowns remain null.
+            selected = await client.call_tool('get_vehicle_telemetry', {'fields': ['battery']})
+            selected_payload = json.loads(selected.content[0].text)
+            assert set(selected_payload['readings']) == {'battery'}
+            assert selected_payload['readings']['battery']['data']['time_remaining_s'] is None
+
             data_sdk.gates['position'] = asyncio.Event()
-            failure = await client.call_tool('get_vehicle_position', {}, raise_on_error=False)
-            assert failure.is_error
-            assert 'timeout:' in failure.content[0].text
-            assert data_sdk.telemetry_plugins[-1].destroyed
+            partial = await client.call_tool('get_vehicle_telemetry', {'fields': ['position', 'battery']})
+            partial_payload = json.loads(partial.content[0].text)
+            assert set(partial_payload['readings']) == {'battery'}
+            assert set(partial_payload['errors']) == {'position'}
+            assert 'timeout:' in partial_payload['errors']['position']
+            failure = await client.call_tool('get_vehicle_telemetry', {'fields': ['position']},
+                                             raise_on_error=False)
+            assert failure.is_error and 'telemetry_unavailable:' in failure.content[0].text
+            assert all(plugin.destroyed for plugin in data_sdk.telemetry_plugins)
+
             data_sdk.errors['identification'] = RuntimeError('unsupported ID')
-            partial = await client.call_tool('get_vehicle_information', {})
-            partial_data = json.loads(partial.content[0].text)['data']
-            assert partial_data['identification'] is None
-            assert partial_data['version']['flight_sw_major'] == 4
-            assert 'unsupported ID' in partial_data['errors']['identification']
+            partial_info = await client.call_tool('get_vehicle_information', {})
+            partial_info_data = json.loads(partial_info.content[0].text)['data']
+            assert partial_info_data['identification'] is None
+            assert partial_info_data['version']['flight_sw_major'] == 4
+            assert 'unsupported ID' in partial_info_data['errors']['identification']
             data_sdk.connection.set_state('disconnected', 'test disconnect')
-            disconnected = await client.call_tool('get_vehicle_battery', {}, raise_on_error=False)
+            disconnected = await client.call_tool('get_vehicle_telemetry', {'fields': ['battery']},
+                                                  raise_on_error=False)
             assert disconnected.is_error
             assert 'not_connected:' in disconnected.content[0].text
             ping = await client.call_tool('ping', {})

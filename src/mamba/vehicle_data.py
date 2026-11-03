@@ -7,12 +7,12 @@ from dataclasses import dataclass
 from enum import Enum
 import logging
 import math
-from typing import Generic, TypeVar
+from typing import Annotated, Generic, Literal, TypeVar
 
 from mavsdk.asyncio.plugins.info import InfoAsync
 from mavsdk.asyncio.plugins.telemetry import TelemetryAsync
 from mavsdk.asyncio.system import System
-from pydantic import BaseModel
+from pydantic import AfterValidator, BaseModel, Field, TypeAdapter, model_serializer
 
 if __package__:
     from .connection import VehicleConnection, utc_now
@@ -93,6 +93,48 @@ class HealthData(BaseModel):
     is_global_position_ok: bool | None = None
     is_home_position_ok: bool | None = None
     is_armable: bool | None = None
+
+
+TelemetryField = Literal["position", "velocity", "battery", "gps", "health"]
+
+
+def unique_fields(fields: list[TelemetryField]) -> list[TelemetryField]:
+    if len(fields) != len(set(fields)):
+        raise ValueError("fields must contain unique telemetry categories")
+    return fields
+
+
+TelemetryFields = Annotated[
+    list[TelemetryField],
+    Field(min_length=1, max_length=5, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(unique_fields),
+]
+TELEMETRY_FIELDS_ADAPTER = TypeAdapter(TelemetryFields)
+
+
+class TelemetrySample(BaseModel, Generic[Data]):
+    received_at: str
+    data: Data
+
+
+class TelemetryReadings(BaseModel):
+    position: TelemetrySample[PositionData] | None = None
+    velocity: TelemetrySample[VelocityData] | None = None
+    battery: TelemetrySample[BatteryData] | None = None
+    gps: TelemetrySample[GpsData] | None = None
+    health: TelemetrySample[HealthData] | None = None
+
+    @model_serializer(mode="wrap")
+    def serialize_readings(self, handler):
+        # Omit absent categories without dropping unknown measurements inside them.
+        return {name: value for name, value in handler(self).items()
+                if getattr(self, name) is not None}
+
+
+class TelemetryResult(BaseModel):
+    system_id: int
+    readings: TelemetryReadings
+    errors: dict[TelemetryField, str]
 
 
 class RetrievalError(Exception):
@@ -234,6 +276,68 @@ class VehicleData:
 
     async def health(self) -> Reading[HealthData]:
         return await self._telemetry("health", HealthData)
+
+    async def telemetry(self, fields: TelemetryFields) -> TelemetryResult:
+        fields = TELEMETRY_FIELDS_ADAPTER.validate_python(fields, strict=True)
+        async with self._request("telemetry"):
+            loop = asyncio.get_running_loop()
+            deadline = loop.time() + REQUEST_TIMEOUT
+            try:
+                async with asyncio.timeout_at(deadline):
+                    system, generation = await self._target()
+            except TimeoutError as exc:
+                raise RetrievalError("timeout: telemetry target validation timed out") from exc
+
+            async def read(field: TelemetryField):
+                try:
+                    async with asyncio.timeout_at(deadline):
+                        return await getattr(self, field)()
+                except TimeoutError as exc:
+                    raise RetrievalError(
+                        f"timeout: no {field} reading within {REQUEST_TIMEOUT:g}s"
+                    ) from exc
+
+            tasks = {field: asyncio.create_task(read(field)) for field in fields}
+            try:
+                _, pending = await asyncio.wait(
+                    tasks.values(), timeout=max(0, deadline - loop.time())
+                )
+                for task in pending:
+                    task.cancel()
+                outcomes = await asyncio.gather(*tasks.values(), return_exceptions=True)
+            finally:
+                for task in tasks.values():
+                    if not task.done():
+                        task.cancel()
+                await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+            # Reject every earlier reading if the batch crossed a connection session.
+            await self._validate(system, generation)
+            readings = {}
+            errors = {}
+            for (field, task), outcome in zip(tasks.items(), outcomes):
+                if (isinstance(outcome, RetrievalError)
+                        and str(outcome).partition(":")[0] in {
+                            "not_connected", "invalid_target", "connection_changed", "unavailable"
+                        }):
+                    raise RetrievalError(str(outcome))
+                if task in pending or isinstance(outcome, asyncio.CancelledError):
+                    errors[field] = f"timeout: no {field} reading within {REQUEST_TIMEOUT:g}s"
+                elif isinstance(outcome, BaseException):
+                    reason = str(outcome)
+                    errors[field] = reason if isinstance(outcome, RetrievalError) else f"sdk_error: {reason}"
+                else:
+                    if outcome.system_id != self.connection.config.system_id:
+                        raise RetrievalError("invalid_target: telemetry categories have different targets")
+                    readings[field] = {"received_at": outcome.received_at, "data": outcome.data}
+            if not readings:
+                raise RetrievalError("telemetry_unavailable: " + "; ".join(
+                    f"{field}: {reason}" for field, reason in errors.items()
+                ))
+            return TelemetryResult(
+                system_id=self.connection.config.system_id,
+                readings=TelemetryReadings(**readings), errors=errors,
+            )
 
     async def _information_part(self, method, model):
         raw = await method()

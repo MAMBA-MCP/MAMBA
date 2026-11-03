@@ -11,9 +11,9 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 SERVER = Path(__file__).resolve().parents[2] / 'src/mamba/server.py'
-DATA_TOOLS = {
-    'get_vehicle_information', 'get_vehicle_position', 'get_vehicle_velocity',
-    'get_vehicle_battery', 'get_vehicle_gps', 'get_vehicle_health',
+DATA_CALLS = {
+    'get_vehicle_information': {},
+    'get_vehicle_telemetry': {'fields': ['position']},
 }
 
 
@@ -39,16 +39,19 @@ def test_stdio_status_and_ping(tmp_path, config_kind):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     tools = await session.list_tools()
-                    assert {t.name for t in tools.tools} == {'ping', 'get_vehicle_status'} | DATA_TOOLS
+                    assert {t.name for t in tools.tools} == {'ping', 'get_vehicle_status'} | set(DATA_CALLS)
                     for tool in tools.tools:
-                        if tool.name in DATA_TOOLS:
+                        if tool.name in DATA_CALLS:
                             assert tool.annotations.readOnlyHint
-                            assert tool.inputSchema.get('properties', {}) == {}
+                            if tool.name == 'get_vehicle_telemetry':
+                                assert tool.inputSchema['required'] == ['fields']
+                            else:
+                                assert tool.inputSchema.get('properties', {}) == {}
                             assert tool.outputSchema is not None
                     status_tool = next(t for t in tools.tools if t.name == 'get_vehicle_status')
                     assert status_tool.annotations.readOnlyHint
-                    for name in DATA_TOOLS:
-                        failure = await session.call_tool(name, {})
+                    for name, arguments in DATA_CALLS.items():
+                        failure = await session.call_tool(name, arguments)
                         assert failure.isError
                         assert 'not_connected' in failure.content[0].text
                     first = await read_status(session)

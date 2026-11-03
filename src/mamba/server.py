@@ -64,41 +64,15 @@ def create_server(config_path: Path | None = None) -> FastMCP:
         return await read_vehicle(ctx, vehicle_data.VehicleData.information)
 
     @server.tool(annotations={"readOnlyHint": True})
-    async def get_vehicle_position(ctx: Context) -> vehicle_data.Reading[vehicle_data.PositionData]:
-        """Read latitude/longitude (degrees), absolute AMSL and relative altitude (metres).
+    async def get_vehicle_telemetry(
+        fields: vehicle_data.TelemetryFields, ctx: Context,
+    ) -> vehicle_data.TelemetryResult:
+        """Read selected position, velocity (NED m/s), battery, GPS, and health categories.
 
-        received_at is MAMBA receipt time; the SDK may supply its latest stored state.
+        Uses one 10-second deadline; returns partial readings and per-category errors.
+        Receipt timestamps differ by category and do not establish sensor freshness.
         """
-        return await read_vehicle(ctx, vehicle_data.VehicleData.position)
-
-    @server.tool(annotations={"readOnlyHint": True})
-    async def get_vehicle_velocity(ctx: Context) -> vehicle_data.Reading[vehicle_data.VelocityData]:
-        """Read NED velocity in m/s; positive down_m_s points downward.
-
-        received_at is MAMBA receipt time, not validated sensor freshness.
-        """
-        return await read_vehicle(ctx, vehicle_data.VehicleData.velocity)
-
-    @server.tool(annotations={"readOnlyHint": True})
-    async def get_vehicle_battery(ctx: Context) -> vehicle_data.Reading[vehicle_data.BatteryData]:
-        """Read one battery update: ID, V, A, degC, Ah, percent (0-100), and seconds.
-
-        Unknown numeric values are null; received_at records MAMBA receipt time.
-        """
-        return await read_vehicle(ctx, vehicle_data.VehicleData.battery)
-
-    @server.tool(annotations={"readOnlyHint": True})
-    async def get_vehicle_gps(ctx: Context) -> vehicle_data.Reading[vehicle_data.GpsData]:
-        """Read satellite count and GPS fix type; received_at is MAMBA receipt time."""
-        return await read_vehicle(ctx, vehicle_data.VehicleData.gps)
-
-    @server.tool(annotations={"readOnlyHint": True})
-    async def get_vehicle_health(ctx: Context) -> vehicle_data.Reading[vehicle_data.HealthData]:
-        """Read SDK health/calibration and armability flags, including false values.
-
-        Flags do not authorize actions; received_at is MAMBA receipt time.
-        """
-        return await read_vehicle(ctx, vehicle_data.VehicleData.health)
+        return await read_vehicle(ctx, lambda data: data.telemetry(fields))
 
     return server
 

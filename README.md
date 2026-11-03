@@ -76,13 +76,9 @@ Adapt the configuration wrapper to your client. Omit `--config` and its path to 
 | `ping` | `{}` | `pong` |
 | `get_vehicle_status` | `{}` | Configured ID, connection state, reason, UTC observation/change timestamps, and discovered autopilot IDs |
 | `get_vehicle_information` | `{}` | Identification and software versions; available sections and explicit partial errors |
-| `get_vehicle_position` | `{}` | Latitude/longitude and absolute/relative altitude |
-| `get_vehicle_velocity` | `{}` | North/east/down velocity in m/s |
-| `get_vehicle_battery` | `{}` | One battery update, including ID, voltage/current, and remaining percentage |
-| `get_vehicle_gps` | `{}` | Satellite count and fix type |
-| `get_vehicle_health` | `{}` | SDK health/calibration and armability flags |
+| `get_vehicle_telemetry` | `{"fields":["position","battery","health"]}` | Selected position, velocity, battery, GPS, and health readings with per-category errors |
 
-The six retrieval tools return `system_id`, UTC `received_at`, and typed `data`, with a 10-second deadline. Telemetry subscriptions close after each call. `received_at` is SDK result receipt time, not validated sensor freshness. See the [vehicle data runbook](docs/runbooks/vehicle-data.md) for fields, units, partial information, errors, and native-work cleanup.
+The catalog contains four tools. Telemetry requires 1–5 unique categories from `position`, `velocity`, `battery`, `gps`, and `health`, with no default selection. Results contain `system_id`, typed `readings` (each with its own UTC `received_at` and `data`), and `errors`. Requested categories run concurrently under one 10-second acquisition deadline; available readings return even when other categories fail. Unrequested categories are omitted. Information retains its existing response. Telemetry subscriptions close after each call. `received_at` is SDK result receipt time, not validated sensor freshness. See the [vehicle data runbook](docs/runbooks/vehicle-data.md) for fields, units, migration from the removed five telemetry tools, partial results, errors, and cleanup. The [interface size comparison](benchmarks/telemetry-interface.md) records descriptor and response bytes without claiming token or reliability improvements.
 
 Connection states are `unconfigured`, `connecting`, `connected`, `disconnected`, and `error`. Connection status does not establish vehicle health or authorization to execute actions.
 

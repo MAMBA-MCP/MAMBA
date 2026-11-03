@@ -16,6 +16,9 @@ package = false
 dev = [
     "pytest>=9.1.1",
 ]
+simulation = [
+    "pymavlink==2.4.49",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

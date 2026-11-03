@@ -1,6 +1,6 @@
 # Vehicle information and telemetry — MAMBA-26 / MAMBA-27
 
-This implements vehicle information retrieval (MAMBA-26, under F2 — MAVSDK Drone Connection) and the read-only telemetry part of F3 — Basic Tools (MAMBA-27). ArduPilot SITL and hardware acceptance remain pending. Navigation, state machines, authorization, and multi-vehicle routing remain planned.
+This implements vehicle information retrieval (MAMBA-26, under F2 — MAVSDK Drone Connection) and the read-only telemetry part of F3 — Basic Tools (MAMBA-27). Single-vehicle read-only ArduPilot SITL validation has passed; see the [acceptance record](../testing/mamba-26-27-sitl.md). Hardware and broader F2/F3 acceptance remain pending. Navigation, state machines, authorization, and multi-vehicle routing remain planned.
 
 ## Startup and catalog
 
@@ -80,3 +80,16 @@ Information operations still run in an executor and cannot safely be stopped on 
 Before claiming ArduPilot acceptance, follow the [connection runbook](connection.md), then compare information and all five categories against independent SITL/GCS observations. Exercise missing GPS/unsupported information, silent topics, partial/total failures, disconnect during a batch, recovery, and cleanup. Record versions, IDs, endpoints, timestamps, values, reasons, and elapsed times. No new SITL or hardware acceptance run was performed for this consolidation.
 
 See the [interface size comparison](../../benchmarks/telemetry-interface.md): fewer descriptors are exposed, while representative response payloads grow slightly. Byte measurements do not establish model token savings, agent reliability, or flight readiness.
+
+## WSL SITL validation — 2026-11-03
+
+The opt-in [real stdio harness](../../tests/simulation/validate_read_only.py)
+passed against stationary, disarmed ArduCopter SITL in Ubuntu 24.04 / WSL2.
+Identification, flight version numbers, position, velocity, battery and GPS were
+checked against independently decoded wire messages. Health flags were retrieved
+and position/home readiness checked; individual health-fault semantics were not
+independently validated. Selective results, filtered-topic partial/total failures,
+missing GPS/information messages, request cancellation, link loss during a batch,
+MCP responsiveness and recovery all passed. See the [commands, evidence and
+limitations](../testing/mamba-26-27-sitl.md), including SDK Git-hash formatting.
+Earlier pending statements above describe prior validation runs.

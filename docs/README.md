@@ -11,6 +11,7 @@ The stdio MCP server (`src/mamba/server.py`) delegates connection configuration,
 | [Open decisions](decisions.md) | Unresolved engineering choices and evidence needed |
 | [Testing strategy](testing/README.md) | Validation levels, evidence, and benchmark metrics |
 | [Acceptance matrix](testing/acceptance-matrix.md) | Feature-to-scenario traceability |
+| [SITL acceptance test](../tests/simulation/README.md) | ArduPilot setup, Codex MCP connection, four-tool checks, and recovery evidence |
 | [Safety test matrix](testing/safety-matrix.md) | Safety-rule-to-scenario traceability |
 | [Vehicle data](runbooks/vehicle-data.md) | Read-only tool fields, timeouts, lifecycle, and pending SITL acceptance |
 | [Vehicle connection](runbooks/connection.md) | Startup TOML, status tool, recovery, and pending SITL acceptance |

@@ -84,6 +84,10 @@ Connection states are `unconfigured`, `connecting`, `connected`, `disconnected`,
 
 ## Development and validation
 
+Follow the [manual ArduPilot SITL acceptance test](tests/simulation/README.md)
+to set up the simulator, connect the Codex MCP harness, check all four tools,
+and record disconnect/recovery evidence.
+
 ```bash
 uv run --locked pytest -q
 git diff --check

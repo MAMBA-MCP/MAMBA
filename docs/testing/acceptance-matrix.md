@@ -1,6 +1,6 @@
 # Feature Acceptance Matrix
 
-Source: proposal §9, except F19 (release table only). IDs follow the appendix; see [numbering reconciliation](../requirements.md). These are summarized acceptance scenarios, not executable tests or exhaustive replacements for the proposal. F1 has automated stdio coverage. F2 (MAMBA-2, MAVSDK Drone Connection) has discovery/status implemented with unit and stdio integration evidence; ArduPilot SITL acceptance remains pending. MAMBA-26/27 implement read-only information and telemetry under F2 and partial F3, with automated coverage and pending SITL acceptance. Other rows are **not run / not implemented**. The level allocation and scenario IDs below are organizational recommendations. Evidence requirements are defined in the [testing plan](README.md).
+Source: proposal §9, except F19 (release table only). IDs follow the appendix; see [numbering reconciliation](../requirements.md). These are summarized acceptance scenarios, not executable tests or exhaustive replacements for the proposal. F1 has automated stdio coverage. F2 (MAMBA-2, MAVSDK Drone Connection) has discovery/status implemented with unit and stdio integration evidence; ArduPilot SITL acceptance remains pending. MAMBA-26/27 implement read-only information and telemetry under F2 and partial F3, with automated coverage and a passed single-vehicle [WSL SITL scenario](mamba-26-27-sitl.md). Broader F2/F3 acceptance remains pending. Other rows are **not run / not implemented**. The level allocation and scenario IDs below are organizational recommendations. Evidence requirements are defined in the [testing plan](README.md).
 
 | Feature | Scenario ID / planned levels | Acceptance focus |
 | --- | --- | --- |
@@ -32,3 +32,20 @@ When executable scenarios exist, link each scenario ID to its test/scenario arti
 MAMBA-26/27 automated record (2026-11-03): `uv run --locked pytest -q` passed 58 tests. Added artifacts: `tests/unit/test_vehicle_data.py`, `tests/integration/test_vehicle_tools.py`, and extended stdio discovery/error tests. F2 information and F3 telemetry remain pending telemetry-only SITL comparison, disconnect/recovery, and cleanup acceptance described in the [vehicle data runbook](../runbooks/vehicle-data.md). F3 navigation and safety acceptance remain planned.
 
 Consolidated telemetry record (2026-11-03): `uv run --locked pytest -q` passed 76 tests. `tests/unit/test_telemetry_batch.py` adds selected-field validation, parallel collection, partial/total failures, a shared deadline, batch cancellation/shutdown cleanup, and whole-batch session invalidation. MCP integration now covers the four-tool catalog and migration away from the five telemetry names. This updates the read-only portion of F3 / MAMBA-27; navigation and SITL/hardware acceptance remain pending.
+
+MAMBA-26/27 WSL SITL record (2026-11-03): the
+[opt-in executable scenario](../../tests/simulation/validate_read_only.py)
+and [retained evidence](evidence/mamba-26-27-wsl.json) establish read-only
+information/telemetry retrieval, independent wire comparisons, missing-topic
+errors, cancellation, disconnect invalidation, responsiveness and recovery
+for one stationary disarmed ArduCopter. See the [scope and limits](mamba-26-27-sitl.md).
+This closes that telemetry-only validation gap; it does not accept all of F2/F3,
+multi-system routing, navigation, safety enforcement, or hardware operation.
+
+MAMBA-28/29/30 record (2026-11-03): native custom XML loading and the
+`PARTICIPANT_POSITION` semantic helper have passed isolated SITL-derived,
+two-way loopback wire acceptance. The [scenario](../../tests/simulation/validate_mavlink_m.py),
+[retained evidence](evidence/mamba-28-29-wsl.json), and
+[mapping matrix](../mavlink-m-mappings.md) distinguish loader support from
+unimplemented mappings. This is partial F2/F12 evidence, not full F12/F14,
+payload, safety or hardware acceptance. No additional MCP tools are exposed.

@@ -47,9 +47,11 @@ The initial discovery window is 10 seconds. A missing target reports `error` wit
 
 Connection and SDK failures do not require MCP tool calls to retry. Configuration errors require an edited file and server restart. Stop the MCP client to close its subprocess, or use Ctrl+C for a manually launched server; shutdown cancels monitoring, waits for any in-flight native connection setup, and destroys the SDK. Native connection setup cannot be forcibly cancelled by asyncio.
 
-## ArduPilot SITL acceptance — pending
+## ArduPilot SITL acceptance
 
-Prerequisite: a separately installed, running ArduPilot SITL/MAVProxy environment. This repository does not install or launch SITL. Follow the official [SITL guide](https://ardupilot.org/dev/docs/using-sitl-for-ardupilot-testing.html). In MAVProxy, use `output add 127.0.0.1:14540` to send MAVLink to the example's listener. Check `output` and confirm the vehicle's `SYSID_THISMAV` matches `system_id`. The example port is a deliberate destination, not an assumption about ArduPilot's default output.
+The automated [read-only WSL scenario](../testing/mamba-26-27-sitl.md) has passed discovery, disconnect detection and recovery for one target. The broader manual sequence below, including a second system, remains pending.
+
+Prerequisite for the manual sequence: a separately installed, running ArduPilot SITL/MAVProxy environment. This repository does not install or launch SITL. Follow the official [SITL guide](https://ardupilot.org/dev/docs/using-sitl-for-ardupilot-testing.html). In MAVProxy, use `output add 127.0.0.1:14540` to send MAVLink to the example's listener. Check `output` and confirm the vehicle's `SYSID_THISMAV` matches `system_id`. The example port is a deliberate destination, not an assumption about ArduPilot's default output.
 
 1. Start SITL and its MAVLink output, then launch MAMBA with the matching TOML file.
 2. Through an MCP client, call `ping` and `get_vehicle_status`; wait for the configured ID to become `connected`.

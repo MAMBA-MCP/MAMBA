@@ -25,3 +25,11 @@ Cover Gazebo/SITL startup failure, port conflict, missing/stale telemetry, MAVSD
 Stop scenario requests, conclude the simulated operation, preserve evidence, disconnect the client, and stop MAMBA/SITL/Gazebo with validated commands (all TBD). Document how queued commands, pending approvals, and old state are cleared or invalidated before rerun. Restore the scenario's initial conditions and verify fresh identities/telemetry. Record whether repeating the same scenario reproduces results.
 
 Do not reuse simulation endpoints or procedures as a physical-hardware procedure. Use the separate [hardware template](hardware.md) after applicable simulation validation.
+
+## Validated narrow scenarios
+
+The generic Gazebo/payload workflow above remains a planning template. Two
+standalone native ArduCopter scenarios are now executable: the
+[read-only MCP acceptance](../testing/mamba-26-27-sitl.md) and the
+[custom XML / own-position wire scenario](mavlink-m.md). Each starts and cleans
+up its own isolated simulator. Neither establishes the broader F5/F14 pipeline.

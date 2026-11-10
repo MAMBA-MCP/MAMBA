@@ -2,7 +2,7 @@
 
 MCP-enabled Autonomous MAVLink-M Bridge for AI.
 
-MAMBA is a Python MCP server for connecting AI agents to MAVLink vehicles. Its planned architecture routes vehicle commands through a deterministic safety layer before MAVSDK/protocol adapters execute them. MAVLink-M payload support remains planned.
+MAMBA is a Python MCP server for connecting AI agents to MAVLink vehicles. Its planned architecture routes vehicle commands through a deterministic safety layer before MAVSDK/protocol adapters execute them. MAVLink-M payload support remains planned. A pinned own-position XML/wire experiment now validates `PARTICIPANT_POSITION` independently; see the [compatibility runbook](docs/runbooks/mavlink-m.md) and [mapping gaps](docs/mavlink-m-mappings.md).
 
 ## Current status
 
@@ -14,9 +14,9 @@ The server uses **FastMCP 2**, stdio transport, and the native **MAVSDK v4 async
 - Read-only connection status through `get_vehicle_status`.
 - Vehicle identification/version and on-demand position, NED velocity, battery, GPS, and health retrieval (MAMBA-26 / MAMBA-27).
 
-This provides the connection and availability implementation for **MAMBA-2 / F2 — MAVSDK Drone Connection**. Automated tests cover configuration, identity selection, failures, recovery, and MCP integration. Successful ArduPilot discovery and disconnect acceptance remain pending SITL validation.
+This provides the connection and availability implementation for **MAMBA-2 / F2 — MAVSDK Drone Connection**. Automated tests cover configuration, identity selection, failures, recovery, and MCP integration. Telemetry-only ArduPilot SITL validation now covers discovery, information, all five telemetry categories, link loss/recovery, and cancellation. See the [WSL acceptance record](docs/testing/mamba-26-27-sitl.md) for evidence and limits; broader connection acceptance remains pending.
 
-Navigation tools, deterministic safety enforcement, authorization, multi-vehicle routing, simulator integration, and hardware validation remain planned. Read-only telemetry covers part of F3 — Basic Tools; it does not establish freshness or permission to act. The [proposal](<Mamba(revised).pdf>) is the requirements baseline; its original dates are planning targets, not completion claims.
+Navigation tools, deterministic safety enforcement, authorization, multi-vehicle routing, Gazebo integration, and hardware validation remain planned. Read-only telemetry covers part of F3 — Basic Tools; it does not establish freshness or permission to act. The [proposal](<Mamba(revised).pdf>) is the requirements baseline; its original dates are planning targets, not completion claims.
 
 ## Quick start
 
@@ -93,7 +93,7 @@ uv run --locked pytest -q
 git diff --check
 ```
 
-Tests cover configuration validation, matching/nonmatching IDs, multiple systems, transport/SDK errors, timeout, persistence, disconnect/recovery, and shutdown. Stdio integration tests also exercise the real native SDK on an empty loopback UDP endpoint. These checks establish timeout handling and protocol compatibility; ArduPilot SITL and physical vehicle acceptance remain pending.
+Tests cover configuration validation, matching/nonmatching IDs, multiple systems, transport/SDK errors, timeout, persistence, disconnect/recovery, and shutdown. Stdio integration tests also exercise the real native SDK on an empty loopback UDP endpoint. The separate opt-in [SITL harness](tests/simulation/validate_read_only.py) validates a stationary, disarmed ArduCopter through real stdio MCP and independently decoded MAVLink. Broader F2/F3 and physical vehicle acceptance remain pending.
 
 Dependencies are declared in `pyproject.toml` and pinned in `uv.lock`. Use `uv add <dependency>` or `uv add --dev <dependency>` and commit the manifest and lockfile together. No formatter, linter, or coverage threshold is configured. See [development setup](docs/development.md) for environment details and recorded validation evidence.
 

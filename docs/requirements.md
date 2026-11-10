@@ -1,6 +1,6 @@
 # Requirements and Roadmap
 
-Source: [proposal](<../Mamba(revised).pdf>) §2.2, §5, and §9. F1 has a basic stdio implementation; F2 (MAMBA-2, MAVSDK Drone Connection) has configured persistent discovery/status and automated failure tests, with ArduPilot SITL acceptance pending. MAMBA-26/27 add read-only information and telemetry (F2 and partial F3); their SITL acceptance also remains pending. Remaining capabilities are **planned / not implemented**; see the [connection runbook](runbooks/connection.md). Dates reproduce the original release plan and are not completion claims or renewed commitments.
+Source: [proposal](<../Mamba(revised).pdf>) §2.2, §5, and §9. F1 has a basic stdio implementation; F2 (MAMBA-2, MAVSDK Drone Connection) has configured persistent discovery/status and automated failure tests, with ArduPilot SITL acceptance pending. MAMBA-26/27 add read-only information and telemetry (F2 and partial F3) with narrow SITL evidence. MAMBA-28/29/30 add pinned XML compatibility, own-position wire validation and a [mapping-gap inventory](mavlink-m-mappings.md); full F12 and other capabilities remain **planned / not implemented**; see the [connection runbook](runbooks/connection.md). Dates reproduce the original release plan and are not completion claims or renewed commitments.
 
 ## Core deliverables
 

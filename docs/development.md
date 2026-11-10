@@ -1,6 +1,6 @@
 # Development Setup
 
-Status: the MCP server entrypoint is `src/mamba/server.py`, with connection configuration, discovery, status types, and SDK lifecycle in `src/mamba/connection.py`, using FastMCP 2 and stdio transport. It exposes `ping`, returning `pong`, read-only `get_vehicle_status`, and information/consolidated selected-field telemetry tools backed by `src/mamba/vehicle_data.py` (MAMBA-26 / MAMBA-27). uv manages dependencies in `pyproject.toml`, resolved versions in `uv.lock`, and the local `.venv`. Optional `--config` startup TOML enables persistent native `mavsdk.asyncio` discovery for one configured system ID (MAMBA-2 / F2). pytest covers configuration, lifecycle, and stdio integration. No vehicle commands, safety enforcement, package build, formatter, or linter exists. ArduPilot SITL acceptance remains pending. Remaining TBD commands are planning placeholders.
+Status: the MCP server entrypoint is `src/mamba/server.py`, with connection configuration, discovery, status types, and SDK lifecycle in `src/mamba/connection.py`, using FastMCP 2 and stdio transport. It exposes `ping`, returning `pong`, read-only `get_vehicle_status`, and information/consolidated selected-field telemetry tools backed by `src/mamba/vehicle_data.py` (MAMBA-26 / MAMBA-27). uv manages dependencies in `pyproject.toml`, resolved versions in `uv.lock`, and the local `.venv`. Optional `--config` startup TOML enables persistent native `mavsdk.asyncio` discovery for one configured system ID (MAMBA-2 / F2). pytest covers configuration, lifecycle, and stdio integration. No vehicle commands, safety enforcement, package build, formatter, or linter exists. Single-vehicle read-only ArduPilot SITL validation is recorded below; broader F2/F3 acceptance remains pending. Remaining TBD commands are planning placeholders.
 
 ## Environment record to complete
 
@@ -74,3 +74,39 @@ Coverage adds six read-only tools, typed MCP results, partial identification/ver
 `uv run --locked pytest -q` passed **76 tests in 18.64s** with two upstream Authlib deprecation warnings, using the previously recorded environment and approved execution outside the restricted sandbox. The added batch tests cover selective dispatch, enum/list validation, concurrent starts, one acquisition deadline, partial/total failures, cancellation/shutdown cleanup, and whole-batch connection-generation rejection. In-process MCP and direct-script stdio tests verify four tools, removed legacy names, required fields, typed selective output, preserved unknown-value nulls, and continued responsiveness. `git diff --check` passed. Dependency files and startup/configuration interfaces are unchanged; SITL acceptance remains pending.
 
 Static measurements were captured before and after consolidation using `benchmarks/measure_telemetry_interface.py` (initially run from `/tmp` with the same code). Catalog descriptors fell from 7505 to 6888 UTF-8 bytes; representative response payloads grew slightly. See [methodology and reproduction](../benchmarks/telemetry-interface.md). These checks do not measure model token use or flight performance.
+
+## WSL baseline and MAMBA-26/27 SITL validation — 2026-11-03
+
+Ubuntu 24.04 / WSL2, Python 3.12.3, uv 0.13.7: `uv sync --locked`
+succeeded and `uv run --locked pytest -q` passed **76 tests in 20.29s**
+before changes, with the same two upstream Authlib deprecation warnings.
+Because uv was absent, it was bootstrapped into an ignored local `.tools`
+virtual environment; commands used `.tools/bin/uv`. The shell's pre-existing
+`VIRTUAL_ENV` was unset for subsequent project runs.
+
+Added an opt-in `simulation` dependency group with pymavlink 2.4.49 and locked
+transitive dependencies; production dependency versions are unchanged.
+The [read-only SITL harness](../tests/simulation/validate_read_only.py)
+passed through a real stdio server and native MAVSDK. See the
+[acceptance record](testing/mamba-26-27-sitl.md) for reproducible commands,
+per-scenario results, raw evidence and remaining limitations. No production
+code changes were needed by the exercised scenarios. This evidence supersedes
+earlier blanket pending statements for this single-vehicle read-only scope.
+
+Final verification after adding the simulation group: `uv run --locked pytest -q`
+passed **76 tests in 18.61s** (the same two Authlib warnings). `uv lock --check`,
+`git diff --check`, and syntax compilation of the opt-in harness passed.
+The final SITL harness passed; no simulator or MAMBA server process remained.
+
+## MAVLink-M investigation and position-report validation — 2026-11-03
+
+MAMBA-28: pinned native XML load confirmed with MAVSDK 4.0.6.
+MAMBA-29: `uv run --locked --group simulation python tests/simulation/validate_mavlink_m.py --ardupilot "$HOME/ardupilot" --output /tmp/mamba-mavlink-m-final`
+passed its isolated two-way wire scenario. The [acceptance record](testing/mamba-28-29-sitl.md)
+retains the version, identity, CRC, byte and field evidence.
+MAMBA-30: the [support matrix](mavlink-m-mappings.md) inventories every custom
+message and the unsupported semantic mappings. Production dependencies and the
+MCP catalog are unchanged; the existing simulation group provides the generator.
+
+`uv run --locked --group simulation pytest -q` passed **112 tests in 19.74s**,
+with the same two upstream Authlib warnings. No formatter/linter is configured.

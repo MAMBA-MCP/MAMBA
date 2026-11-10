@@ -1,0 +1,854 @@
+{
+  "started_at": "2026-11-03T19:03:18.740538+00:00",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "versions": {
+    "fastmcp": "2.14.7",
+    "mavsdk": "4.0.6",
+    "mcp": "1.30.0",
+    "pymavlink": "2.4.49"
+  },
+  "binary_sha256": "ed86aa366e26025bcaba9f7a284b2982b06ed930f5509bcf6791f3ce128139c7",
+  "defaults_sha256": "5e01345b45d1c6190b28bece5638bbdd4cf1cce35e05bbbf480ab24d2b51aa0e",
+  "ardupilot_source_revision": "9165d22419406556fc9815d9f4e3e299e13713a8",
+  "mamba_base_revision": "e7bb91ef2f02b590e37c50d5397cf693c0f80e97",
+  "passed": true,
+  "simulator_command": [
+    "/home/jank/ardupilot/build/sitl/bin/arducopter",
+    "--model",
+    "quad",
+    "--home",
+    "40,-74,125,0",
+    "--defaults",
+    "/home/jank/ardupilot/Tools/autotest/default_params/copter.parm",
+    "--sysid",
+    "1",
+    "--instance",
+    "31",
+    "--serial0",
+    "udpclient:127.0.0.1:42870"
+  ],
+  "endpoints": {
+    "router_port": 42870,
+    "mamba_port": 41081
+  },
+  "startup": [
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:03:21.712382+00:00",
+      "elapsed_s": 0.016,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "connecting",
+        "reason": "Waiting for configured autopilot",
+        "last_changed_at": "2026-11-03T19:03:21.591699+00:00",
+        "last_checked_at": "2026-11-03T19:03:21.692035+00:00",
+        "discovered_system_ids": []
+      }
+    },
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:03:22.779438+00:00",
+      "elapsed_s": 0.013,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "connected",
+        "reason": "Configured autopilot is connected",
+        "last_changed_at": "2026-11-03T19:03:22.694855+00:00",
+        "last_checked_at": "2026-11-03T19:03:22.694822+00:00",
+        "discovered_system_ids": [
+          1
+        ]
+      }
+    }
+  ],
+  "information": {
+    "tool": "get_vehicle_information",
+    "arguments": {},
+    "observed_at": "2026-11-03T19:03:39.054201+00:00",
+    "elapsed_s": 0.09,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "received_at": "2026-11-03T19:03:38.979024+00:00",
+      "data": {
+        "identification": {
+          "hardware_uid": "806234323934663638643963346130616200",
+          "legacy_uid": 0
+        },
+        "version": {
+          "flight_sw_major": 4,
+          "flight_sw_minor": 8,
+          "flight_sw_patch": 0,
+          "flight_sw_vendor_major": 54,
+          "flight_sw_vendor_minor": 49,
+          "flight_sw_vendor_patch": 57,
+          "os_sw_major": 0,
+          "os_sw_minor": 0,
+          "os_sw_patch": 0,
+          "flight_sw_git_hash": "343232643",
+          "os_sw_git_hash": "000000000000000",
+          "flight_sw_version_type": "DEV"
+        },
+        "errors": {}
+      }
+    }
+  },
+  "telemetry": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "position",
+        "velocity",
+        "battery",
+        "gps",
+        "health"
+      ]
+    },
+    "observed_at": "2026-11-03T19:03:38.964209+00:00",
+    "elapsed_s": 0.999,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "position": {
+          "received_at": "2026-11-03T19:03:38.051930+00:00",
+          "data": {
+            "latitude_deg": 40.0,
+            "longitude_deg": -74.0,
+            "absolute_altitude_m": 125.09000396728516,
+            "relative_altitude_m": 0.0
+          }
+        },
+        "velocity": {
+          "received_at": "2026-11-03T19:03:38.055578+00:00",
+          "data": {
+            "north_m_s": 0.0,
+            "east_m_s": 0.0,
+            "down_m_s": 0.0
+          }
+        },
+        "battery": {
+          "received_at": "2026-11-03T19:03:38.058959+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": null,
+            "capacity_consumed_ah": null,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        },
+        "gps": {
+          "received_at": "2026-11-03T19:03:38.061960+00:00",
+          "data": {
+            "num_satellites": 10,
+            "fix_type": "RTK_FIXED"
+          }
+        },
+        "health": {
+          "received_at": "2026-11-03T19:03:38.812829+00:00",
+          "data": {
+            "is_gyrometer_calibration_ok": true,
+            "is_accelerometer_calibration_ok": true,
+            "is_magnetometer_calibration_ok": true,
+            "is_local_position_ok": true,
+            "is_global_position_ok": true,
+            "is_home_position_ok": true,
+            "is_armable": true
+          }
+        }
+      },
+      "errors": {}
+    }
+  },
+  "comparisons": [
+    {
+      "field": "position.latitude_deg",
+      "actual": 40.0,
+      "expected": 40.0,
+      "tolerance": 1e-05,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "position.longitude_deg",
+      "actual": -74.0,
+      "expected": -74.0,
+      "tolerance": 1e-05,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "position.absolute_altitude_m",
+      "actual": 125.09000396728516,
+      "expected": 125.09,
+      "tolerance": 0.5,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "position.relative_altitude_m",
+      "actual": 0.0,
+      "expected": 0.0,
+      "tolerance": 0.5,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "velocity.north_m_s",
+      "actual": 0.0,
+      "expected": 0.0,
+      "tolerance": 0.15,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "velocity.east_m_s",
+      "actual": 0.0,
+      "expected": 0.0,
+      "tolerance": 0.15,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "velocity.down_m_s",
+      "actual": 0.0,
+      "expected": 0.0,
+      "tolerance": 0.15,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051026+00:00",
+        "monotonic": 668.123198459,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GLOBAL_POSITION_INT",
+          "time_boot_ms": 19282,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "relative_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 35630
+        }
+      }
+    },
+    {
+      "field": "battery.voltage_v",
+      "actual": 12.600000381469727,
+      "expected": 12.6,
+      "tolerance": 0.1,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051317+00:00",
+        "monotonic": 668.123485845,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "SYS_STATUS",
+          "onboard_control_sensors_present": 1399979055,
+          "onboard_control_sensors_enabled": 1380031535,
+          "onboard_control_sensors_health": 1464966191,
+          "load": 0,
+          "voltage_battery": 12600,
+          "current_battery": 0,
+          "battery_remaining": 100,
+          "drop_rate_comm": 0,
+          "errors_comm": 0,
+          "errors_count1": 0,
+          "errors_count2": 0,
+          "errors_count3": 0,
+          "errors_count4": 0
+        }
+      }
+    },
+    {
+      "field": "battery.remaining_percent",
+      "actual": 100.0,
+      "expected": 100,
+      "tolerance": 1,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.051317+00:00",
+        "monotonic": 668.123485845,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "SYS_STATUS",
+          "onboard_control_sensors_present": 1399979055,
+          "onboard_control_sensors_enabled": 1380031535,
+          "onboard_control_sensors_health": 1464966191,
+          "load": 0,
+          "voltage_battery": 12600,
+          "current_battery": 0,
+          "battery_remaining": 100,
+          "drop_rate_comm": 0,
+          "errors_comm": 0,
+          "errors_count1": 0,
+          "errors_count2": 0,
+          "errors_count3": 0,
+          "errors_count4": 0
+        }
+      }
+    },
+    {
+      "field": "gps.num_satellites",
+      "actual": 10,
+      "expected": 10,
+      "tolerance": 0,
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.057755+00:00",
+        "monotonic": 668.129922681,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "GPS_RAW_INT",
+          "time_usec": 19173000,
+          "fix_type": 6,
+          "lat": 400000000,
+          "lon": -740000000,
+          "alt": 125090,
+          "eph": 121,
+          "epv": 200,
+          "vel": 0,
+          "cog": 0,
+          "satellites_visible": 10,
+          "alt_ellipsoid": 125090,
+          "h_acc": 300,
+          "v_acc": 300,
+          "vel_acc": 0,
+          "hdg_acc": 0,
+          "yaw": 0
+        }
+      }
+    },
+    {
+      "field": "information.version/legacy_uid",
+      "actual": {
+        "identification": {
+          "hardware_uid": "806234323934663638643963346130616200",
+          "legacy_uid": 0
+        },
+        "version": {
+          "flight_sw_major": 4,
+          "flight_sw_minor": 8,
+          "flight_sw_patch": 0,
+          "flight_sw_vendor_major": 54,
+          "flight_sw_vendor_minor": 49,
+          "flight_sw_vendor_patch": 57,
+          "os_sw_major": 0,
+          "os_sw_minor": 0,
+          "os_sw_patch": 0,
+          "flight_sw_git_hash": "343232643",
+          "os_sw_git_hash": "000000000000000",
+          "flight_sw_version_type": "DEV"
+        },
+        "errors": {}
+      },
+      "reference": {
+        "received_at": "2026-11-03T19:03:38.972672+00:00",
+        "monotonic": 669.044847169,
+        "system_id": 1,
+        "component_id": 1,
+        "message": {
+          "mavpackettype": "AUTOPILOT_VERSION",
+          "capabilities": 64495,
+          "flight_sw_version": 67633152,
+          "middleware_sw_version": 0,
+          "os_sw_version": 0,
+          "board_version": 0,
+          "flight_custom_version": [
+            57,
+            49,
+            54,
+            53,
+            100,
+            50,
+            50,
+            52
+          ],
+          "middleware_custom_version": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "os_custom_version": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "vendor_id": 0,
+          "product_id": 0,
+          "uid": 0,
+          "uid2": [
+            128,
+            98,
+            52,
+            50,
+            57,
+            52,
+            102,
+            54,
+            56,
+            100,
+            57,
+            99,
+            52,
+            97,
+            48,
+            97,
+            98,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "selective": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "battery"
+      ]
+    },
+    "observed_at": "2026-11-03T19:03:39.207029+00:00",
+    "elapsed_s": 0.144,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "battery": {
+          "received_at": "2026-11-03T19:03:39.069174+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": 0.0,
+            "capacity_consumed_ah": 0.0,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        }
+      },
+      "errors": {}
+    }
+  },
+  "persistent": {
+    "tool": "get_vehicle_status",
+    "arguments": {},
+    "observed_at": "2026-11-03T19:03:39.229765+00:00",
+    "elapsed_s": 0.023,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "state": "connected",
+      "reason": "Configured autopilot is connected",
+      "last_changed_at": "2026-11-03T19:03:22.694855+00:00",
+      "last_checked_at": "2026-11-03T19:03:38.725274+00:00",
+      "discovered_system_ids": [
+        1
+      ]
+    }
+  },
+  "partial": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "position",
+        "battery"
+      ]
+    },
+    "observed_at": "2026-11-03T19:03:53.237499+00:00",
+    "elapsed_s": 10.082,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "battery": {
+          "received_at": "2026-11-03T19:03:43.299492+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": null,
+            "capacity_consumed_ah": null,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        }
+      },
+      "errors": {
+        "position": "timeout: no position reading within 10s"
+      }
+    }
+  },
+  "total_failure": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "position",
+        "velocity"
+      ]
+    },
+    "observed_at": "2026-11-03T19:04:03.248753+00:00",
+    "elapsed_s": 10.011,
+    "is_error": true,
+    "value": "telemetry_unavailable: position: timeout: no position reading within 10s; velocity: timeout: no velocity reading within 10s"
+  },
+  "after_cancellation": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "battery"
+      ]
+    },
+    "observed_at": "2026-11-03T19:04:04.135165+00:00",
+    "elapsed_s": 0.185,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "battery": {
+          "received_at": "2026-11-03T19:04:04.055725+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": null,
+            "capacity_consumed_ah": null,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        }
+      },
+      "errors": {}
+    }
+  },
+  "disconnect": [
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:04:04.649492+00:00",
+      "elapsed_s": 0.013,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "connected",
+        "reason": "Configured autopilot is connected",
+        "last_changed_at": "2026-11-03T19:03:43.047369+00:00",
+        "last_checked_at": "2026-11-03T19:04:04.098177+00:00",
+        "discovered_system_ids": [
+          1
+        ]
+      }
+    },
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:04:07.217934+00:00",
+      "elapsed_s": 0.017,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "disconnected",
+        "reason": "Configured autopilot disconnected",
+        "last_changed_at": "2026-11-03T19:04:07.101992+00:00",
+        "last_checked_at": "2026-11-03T19:04:07.101932+00:00",
+        "discovered_system_ids": []
+      }
+    }
+  ],
+  "disconnect_elapsed_s": 2.582,
+  "interrupted_batch": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "position",
+        "battery"
+      ]
+    },
+    "observed_at": "2026-11-03T19:04:14.141705+00:00",
+    "elapsed_s": 10.006,
+    "is_error": true,
+    "value": "connection_changed: vehicle connection is no longer valid"
+  },
+  "ping_disconnected": {
+    "tool": "ping",
+    "arguments": {},
+    "observed_at": "2026-11-03T19:04:14.146251+00:00",
+    "elapsed_s": 0.004,
+    "is_error": false,
+    "value": "pong"
+  },
+  "information_disconnected": {
+    "tool": "get_vehicle_information",
+    "arguments": {},
+    "observed_at": "2026-11-03T19:04:14.148303+00:00",
+    "elapsed_s": 0.002,
+    "is_error": true,
+    "value": "not_connected: configured vehicle is unavailable"
+  },
+  "recovery": [
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:04:14.160494+00:00",
+      "elapsed_s": 0.012,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "connecting",
+        "reason": "Waiting for configured autopilot",
+        "last_changed_at": "2026-11-03T19:04:12.103210+00:00",
+        "last_checked_at": "2026-11-03T19:04:14.106500+00:00",
+        "discovered_system_ids": []
+      }
+    },
+    {
+      "tool": "get_vehicle_status",
+      "arguments": {},
+      "observed_at": "2026-11-03T19:04:15.224011+00:00",
+      "elapsed_s": 0.012,
+      "is_error": false,
+      "value": {
+        "system_id": 1,
+        "state": "connected",
+        "reason": "Configured autopilot is connected",
+        "last_changed_at": "2026-11-03T19:04:15.107678+00:00",
+        "last_checked_at": "2026-11-03T19:04:15.107651+00:00",
+        "discovered_system_ids": [
+          1
+        ]
+      }
+    }
+  ],
+  "recovered_telemetry": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "position",
+        "velocity",
+        "battery",
+        "gps",
+        "health"
+      ]
+    },
+    "observed_at": "2026-11-03T19:04:15.902474+00:00",
+    "elapsed_s": 0.678,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "position": {
+          "received_at": "2026-11-03T19:04:15.305662+00:00",
+          "data": {
+            "latitude_deg": 39.9999999,
+            "longitude_deg": -73.99999989999999,
+            "absolute_altitude_m": 125.09000396728516,
+            "relative_altitude_m": 0.0
+          }
+        },
+        "velocity": {
+          "received_at": "2026-11-03T19:04:15.308956+00:00",
+          "data": {
+            "north_m_s": -0.009999999776482582,
+            "east_m_s": 0.009999999776482582,
+            "down_m_s": 0.0
+          }
+        },
+        "battery": {
+          "received_at": "2026-11-03T19:04:15.311781+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": null,
+            "capacity_consumed_ah": null,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        },
+        "gps": {
+          "received_at": "2026-11-03T19:04:15.315753+00:00",
+          "data": {
+            "num_satellites": 10,
+            "fix_type": "RTK_FIXED"
+          }
+        },
+        "health": {
+          "received_at": "2026-11-03T19:04:15.820392+00:00",
+          "data": {
+            "is_gyrometer_calibration_ok": true,
+            "is_accelerometer_calibration_ok": true,
+            "is_magnetometer_calibration_ok": true,
+            "is_local_position_ok": true,
+            "is_global_position_ok": true,
+            "is_home_position_ok": true,
+            "is_armable": true
+          }
+        }
+      },
+      "errors": {}
+    }
+  },
+  "unavailable_information": {
+    "tool": "get_vehicle_information",
+    "arguments": {},
+    "observed_at": "2026-11-03T19:04:19.387752+00:00",
+    "elapsed_s": 0.507,
+    "is_error": true,
+    "value": "information_unavailable: identification: sdk_error: INFORMATION_NOT_RECEIVED_YET; origin: get_identification(); params: (); version: sdk_error: INFORMATION_NOT_RECEIVED_YET; origin: get_version(); params: ()"
+  },
+  "missing_gps": {
+    "tool": "get_vehicle_telemetry",
+    "arguments": {
+      "fields": [
+        "gps",
+        "battery"
+      ]
+    },
+    "observed_at": "2026-11-03T19:04:29.489405+00:00",
+    "elapsed_s": 10.102,
+    "is_error": false,
+    "value": {
+      "system_id": 1,
+      "readings": {
+        "battery": {
+          "received_at": "2026-11-03T19:04:19.556291+00:00",
+          "data": {
+            "id": 0,
+            "temperature_degc": null,
+            "voltage_v": 12.600000381469727,
+            "current_battery_a": null,
+            "capacity_consumed_ah": null,
+            "remaining_percent": 100.0,
+            "time_remaining_s": null,
+            "battery_function": "UNKNOWN"
+          }
+        }
+      },
+      "errors": {
+        "gps": "timeout: no gps reading within 10s"
+      }
+    }
+  },
+  "simulator_exit_code": 0,
+  "wire_observation_count": 7326,
+  "finished_at": "2026-11-03T19:04:29.914092+00:00"
+}
